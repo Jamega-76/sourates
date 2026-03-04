@@ -663,11 +663,7 @@
     </header>
 
     <div class="refresh-bar">
-      <div class="refresh-info">
-        Nouvelle sourate disponible chaque jour à 9h00
-        <span id="nextUnlock">—</span>
-      </div>
-      <button class="refresh-btn" id="refreshBtn" onclick="refreshContent()">
+<button class="refresh-btn" id="refreshBtn" onclick="refreshContent()">
         <span class="icon">↻</span> Vérifier
       </button>
     </div>
@@ -907,13 +903,13 @@ function refreshContent() {
 document.getElementById('shareBtn').addEventListener('click', () => {
   if (currentIndex === null || !data) return;
   const s = data.sourates[currentIndex];
-  const link = SITE_URL ? `\n\n🔗 ${SITE_URL}/index.html?s=${s.number}` : '';
-  const text = `Sourate ${s.number} — ${s.fr} (${s.translation})\n\n${s.preview}${link}\n\n📖 نور — Une Sourate par Jour`;
+  const url = `${SITE_URL}/index.html?s=${s.number}`;
+  const text = `Sourate ${s.number} — ${s.fr} (${s.translation})\n\n${s.preview}\n\n📖 نور — Une Sourate par Jour`;
 
   if (navigator.share) {
-    navigator.share({ title: `${s.fr} — Une Sourate par Jour`, text, url: SITE_URL ? `${SITE_URL}/index.html?s=${s.number}` : undefined });
+    navigator.share({ title: `${s.fr} — ${s.translation}`, text, url });
   } else {
-    navigator.clipboard.writeText(text).then(showToast);
+    navigator.clipboard.writeText(text + `\n\n🔗 ${url}`).then(showToast);
   }
 });
 
