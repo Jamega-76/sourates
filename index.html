@@ -799,7 +799,6 @@ function isNewToday(index) {
 function renderAll() {
   const unlockedCount = getUnlockedCount();
   renderProgressBar(unlockedCount);
-  renderNextUnlock(unlockedCount);
   renderCards(unlockedCount);
   // Deep link: ouvre directement la sourate si ?s=N dans l'URL
   const params = new URLSearchParams(window.location.search);
@@ -816,10 +815,6 @@ function renderProgressBar(unlockedCount) {
   const pct = (unlockedCount / 114 * 100).toFixed(1);
   document.getElementById('progressFill').style.width = pct + '%';
   document.getElementById('progressCount').textContent = unlockedCount + ' / 114';
-}
-
-function renderNextUnlock(unlockedCount) {
-  document.getElementById('nextUnlock').textContent = getNextUnlockLabel(unlockedCount);
 }
 
 function renderCards(unlockedCount) {
