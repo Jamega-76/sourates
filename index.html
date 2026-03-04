@@ -691,6 +691,16 @@ function getNextUnlockLabel(unlockedCount) {
 
 
 
+// ─── UNLOCK DATE LABEL ───────────────────────────────────
+function getUnlockLabel(s) {
+  const start = new Date(data.startDate);
+  const unlockDay = s.unlockDay ?? 9999;
+  const unlockDate = new Date(start.getFullYear(), start.getMonth(), start.getDate() + unlockDay);
+
+  const opts = { weekday: 'long', day: 'numeric', month: 'long' };
+  return 'le ' + unlockDate.toLocaleDateString('fr-FR', opts) + ' à 8h';
+}
+
 // ─── RENDER ALL ───────────────────────────────────────────
 function renderAll() {
   const unlockedCount = getUnlockedCount();
@@ -751,7 +761,7 @@ function renderCards(unlockedCount) {
           </div>
           <div class="sourate-title-ar" style="opacity:0.3">${s.ar}</div>
           <div class="sourate-title-fr" style="opacity:0.4">${s.fr} — ${s.translation}</div>
-          <div class="locked-label">🔒 Disponible prochainement</div>
+          <div class="locked-label">🔒 Disponible ${getUnlockLabel(s)}</div>
         </div>`;
     }
   }).join('');
