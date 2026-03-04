@@ -714,6 +714,9 @@
 // Modifie startDate pour définir le jour où la sourate 1 est apparue
 // Format : YYYY-MM-DD  — l'heure de déverrouillage est dans le JSON (unlockHour)
 const JSON_URL = './sourates.json';
+// ⚙️ Mets ici l'URL complète de ton site (sans slash final)
+// Ex: 'https://monsite.com/nour'
+const SITE_URL = 'https://jamega-76.github.io/sourates';
 
 // ─── STATE ────────────────────────────────────────────────
 let data = null;
@@ -802,6 +805,13 @@ function renderAll() {
   renderProgressBar(unlockedCount);
   renderNextUnlock(unlockedCount);
   renderCards(unlockedCount);
+  // Deep link: ouvre directement la sourate si ?s=N dans l'URL
+  const params = new URLSearchParams(window.location.search);
+  const sNum = parseInt(params.get('s'));
+  if (sNum) {
+    const idx = data.sourates.findIndex(s => s.number === sNum);
+    if (idx !== -1 && idx < unlockedCount) showFull(idx);
+  }
 }
 
 function renderProgressBar(unlockedCount) {
@@ -897,10 +907,11 @@ function refreshContent() {
 document.getElementById('shareBtn').addEventListener('click', () => {
   if (currentIndex === null || !data) return;
   const s = data.sourates[currentIndex];
-  const text = `Sourate ${s.number} — ${s.fr} (${s.translation})\n\n${s.preview}\n\n📖 نور — Une Sourate par Jour`;
+  const link = SITE_URL ? `\n\n🔗 ${SITE_URL}/index.html?s=${s.number}` : '';
+  const text = `Sourate ${s.number} — ${s.fr} (${s.translation})\n\n${s.preview}${link}\n\n📖 نور — Une Sourate par Jour`;
 
   if (navigator.share) {
-    navigator.share({ title: `${s.fr} — Une Sourate par Jour`, text });
+    navigator.share({ title: `${s.fr} — Une Sourate par Jour`, text, url: SITE_URL ? `${SITE_URL}/index.html?s=${s.number}` : undefined });
   } else {
     navigator.clipboard.writeText(text).then(showToast);
   }
