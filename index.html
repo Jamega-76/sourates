@@ -486,6 +486,37 @@
   }
 
   /* ══════════════════════════════
+     BOTTOM BACK BUTTON
+  ══════════════════════════════ */
+  .bottom-back-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    width: 100%;
+    margin-top: 32px;
+    padding: 18px 24px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.78rem;
+    letter-spacing: 0.25em;
+    color: #0e0b07;
+    text-transform: uppercase;
+    font-weight: 700;
+    cursor: pointer;
+    border: none;
+    background: var(--gold);
+    border-radius: 4px;
+    box-shadow: 0 2px 16px rgba(212,160,67,0.35);
+    transition: all 0.22s;
+  }
+  .bottom-back-btn:hover {
+    background: var(--gold-light);
+    box-shadow: 0 4px 24px rgba(212,160,67,0.5);
+    transform: translateY(-1px);
+  }
+  .bottom-back-btn:active { transform: translateY(0); }
+
+  /* ══════════════════════════════
      SCROLL PROGRESS
   ══════════════════════════════ */
   .scroll-progress {
@@ -628,6 +659,7 @@
     <div class="share-row">
       <button class="share-btn" id="shareBtn">✦ Partager cette sourate</button>
     </div>
+    <button class="bottom-back-btn" id="bottomBackBtn">← Voir toutes les sourates</button>
     <footer style="margin-top:40px;">
       <p>نور — La Lumière ✦ Étude quotidienne du Coran</p>
     </footer>
@@ -819,11 +851,13 @@ function showFull(index) {
 }
 
 // ─── BACK ─────────────────────────────────────────────────
-document.getElementById('backBtn').addEventListener('click', () => {
+document.getElementById('bottomBackBtn').addEventListener('click', goBack);
+document.getElementById('backBtn').addEventListener('click', goBack);
+function goBack() {
   document.getElementById('fullView').classList.remove('active');
   document.getElementById('listView').style.display = 'block';
   window.scrollTo({ top: 0, behavior: 'smooth' });
-});
+}
 
 // ─── SHARE ────────────────────────────────────────────────
 document.getElementById('shareBtn').addEventListener('click', () => {
