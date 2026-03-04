@@ -795,8 +795,9 @@ function renderCards(unlockedCount) {
     const unlocked = (s.unlockDay ?? 9999) <= daysDiff2;
 
     if (unlocked) {
+      const unreadClass = isRead(s.number) ? '' : 'unread';
       return `
-        <div class="sourate-card ${isRead(s.number) ? '' : 'unread'}" onclick="showFull(${i})" style="animation-delay:${rank * 0.04}s">
+        <div class="sourate-card ${unreadClass}" onclick="showFull(${i})" style="animation-delay:${rank * 0.04}s">
           <div class="card-header">
             <span class="sourate-number">Sourate ${s.number}</span>
             <div class="sourate-badge">
