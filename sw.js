@@ -1,5 +1,5 @@
 // نور — Service Worker
-const CACHE = 'nour-v1';
+const CACHE = 'nour-v2';
 const ASSETS = [
   './',
   './index.html',
