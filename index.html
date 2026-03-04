@@ -653,18 +653,18 @@ function getUnlockedCount() {
   if (!data) return 0;
   const start = new Date(data.startDate);
   const now = new Date();
-  const unlockHour = data.unlockHour || 12;
+  const unlockHour = data.unlockHour || 8;
 
-  // Day difference
+  // How many days since startDate
   const startDay = new Date(start.getFullYear(), start.getMonth(), start.getDate());
   const todayDay = new Date(now.getFullYear(), now.getMonth(), now.getDate());
   let daysDiff = Math.floor((todayDay - startDay) / 86400000);
 
-  // If today's unlock hour hasn't passed yet, one less
+  // If today's unlock hour hasn't passed yet, treat as yesterday
   if (now.getHours() < unlockHour) daysDiff -= 1;
 
-  // At least 0, at most number of sourates in JSON
-  return Math.max(0, Math.min(daysDiff + 1, data.sourates.length));
+  // Count sourates whose unlockDay <= daysDiff
+  return data.sourates.filter(s => (s.unlockDay ?? 9999) <= daysDiff).length;
 }
 
 // ─── NEXT UNLOCK TIME ─────────────────────────────────────
@@ -719,7 +719,14 @@ function renderCards(unlockedCount) {
   const indices = [...Array(data.sourates.length).keys()].reverse();
   container.innerHTML = indices.map((i, rank) => {
     const s = data.sourates[i];
-    const unlocked = i < unlockedCount;
+    const start2 = new Date(data.startDate);
+    const now2 = new Date();
+    const unlockHour2 = data.unlockHour || 8;
+    const startDay2 = new Date(start2.getFullYear(), start2.getMonth(), start2.getDate());
+    const todayDay2 = new Date(now2.getFullYear(), now2.getMonth(), now2.getDate());
+    let daysDiff2 = Math.floor((todayDay2 - startDay2) / 86400000);
+    if (now2.getHours() < unlockHour2) daysDiff2 -= 1;
+    const unlocked = (s.unlockDay ?? 9999) <= daysDiff2;
 
     if (unlocked) {
       return `
